@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HireSight — Smart Resume Evaluator</title>
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">z
+      <div class="brand">
+        <img src="logo.svg" alt="Logo" class="logo" />
+        <div>
+          <div class="brand-name">HireSight</div>
+          <div class="brand-sub">Smart resume evaluation</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#match" class="nav-link">Resume Match</a>
+        <a href="#ats" class="nav-link">ATS Checker</a>
+        <button id="btn-auth" class="btn btn-outline">Login / Sign up</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <h1>Evaluate resumes with precision. Optimize with confidence.</h1>
+          <p class="muted">Upload a resume, paste a job description or a job title and get match score, missing skills with free course links, ATS readiness and a suggested job to apply for.</p>
+          <div class="hero-actions">
+            <a href="#match" class="btn btn-primary">Start Resume Match</a>
+            <a href="#ats" class="btn btn-ghost">Run ATS Check</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="hero-illustration.svg" alt="Illustration" />
+        </div>
+      </div>
+    </section>
+
+    <!-- MATCH -->
+    <section id="match" class="section">
+      <div class="container two-col">
+        <div class="left-col">
+          <div class="card">
+            <h3>Upload & Job Details</h3>
+            <label class="file-drop" id="match-drop">
+              <input id="match-file" type="file" accept=".pdf,.doc,.docx,.txt" />
+              <span id="match-drop-text">Drop resume here or click to upload</span>
+            </label>
+
+            <div class="field-group">
+              <label for="job-title">Job Title (optional)</label>
+              <input id="job-title" type="text" placeholder="e.g., Data Analyst" />
+            </div>
+
+            <div class="field-group">
+              <label for="job-desc">Job Description (optional)</label>
+              <textarea id="job-desc" rows="6" placeholder="Paste the full JD here"></textarea>
+            </div>
+
+            <div class="actions-row">
+              <button id="btn-analyze-match" class="btn btn-primary">Analyze Match</button>
+              <button id="btn-clear-match" class="btn btn-ghost">Clear</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>Required Skills (detected in JD/title)</h4>
+            <ul id="required-skills" class="pill-list"></ul>
+          </div>
+        </div>
+
+        <div class="right-col">
+          <div class="card sticky">
+            <div class="score-row">
+              <div>
+                <h4>Match Score</h4>
+                <div id="match-score" class="score">--%</div>
+              </div>
+              <div>
+                <h4>ATS Readiness</h4>
+                <div id="ats-score" class="score small">--%</div>
+              </div>
+            </div>
+            <div class="progress">
+              <div id="match-progress" class="progress-bar" style="width:0%"></div>
+            </div>
+            <div id="match-suggestions" class="suggestions"></div>
+          </div>
+
+          <div class="card preview">
+            <div class="preview-header">
+              <h4>Resume Preview</h4>
+              <button id="open-resume" class="btn btn-outline btn-sm">Open</button>
+            </div>
+            <iframe id="resume-preview" title="Resume preview"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ATS -->
+    <section id="ats" class="section alt">
+      <div class="container two-col">
+        <div class="left-col">
+          <div class="card">
+            <h3>ATS Checker</h3>
+            <label class="file-drop" id="ats-drop">
+              <input id="ats-file" type="file" accept=".pdf,.doc,.docx,.txt" />
+              <span>Drop resume here or click to upload</span>
+            </label>
+            <div class="actions-row">
+              <button id="btn-analyze-ats" class="btn btn-primary">Run ATS Check</button>
+              <button id="btn-clear-ats" class="btn btn-ghost">Clear</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>Issues & Recommendations</h4>
+            <ul id="ats-issues" class="issue-list"></ul>
+          </div>
+        </div>
+
+        <div class="right-col">
+          <div class="card sticky">
+            <h4>ATS Readiness</h4>
+            <div class="progress">
+              <div id="ats-progress" class="progress-bar" style="width:0%"></div>
+            </div>
+            <div id="ats-suggestions" class="suggestions"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Auth Modal -->
+  <div class="modal" id="auth-modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-dialog">
+      <button class="modal-close" data-close>&times;</button>
+      <div class="tabs">
+        <button class="tab active" data-tab="login">Login</button>
+        <button class="tab" data-tab="signup">Sign up</button>
+      </div>
+
+      <div class="tab-panels">
+        <div class="tab-panel active" id="panel-login">
+          <h4 id="auth-title">Login</h4>
+          <form id="login-form" novalidate>
+            <label>Email <input id="login-email" type="email" required /></label>
+            <label>Password <input id="login-password" type="password" required /></label>
+            <button type="submit" class="btn btn-primary full">Log in</button>
+          </form>
+        </div>
+
+        <div class="tab-panel" id="panel-signup">
+          <h4>Sign up</h4>
+          <form id="signup-form" novalidate>
+            <label>Full name <input id="signup-name" type="text" required /></label>
+            <label>Email <input id="signup-email" type="email" required /></label>
+            <label>Password <input id="signup-password" type="password" required /></label>
+            <button type="submit" class="btn btn-primary full">Create account</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
